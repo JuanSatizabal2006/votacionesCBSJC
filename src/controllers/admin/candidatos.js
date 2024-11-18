@@ -1,20 +1,26 @@
 import { db } from "../../db.js"
+import { URL_IMG } from '../../config.js'
+import { response } from "express";
 
 export const crearCandidatos = async (req, res) =>{
-    try {
-        console.log(req.file);
-        console.log(req.file);
-        
-        const nameImg = `http://localhost:3000/static/uploads/${req.file.originalname}`
+    try {        
+        console.log(req.body);
+       
+        const nameImg = `${URL_IMG}${req.file.originalname}`
+        const { nombre, apellido, grado, numeral, idTemporada } = req.body;
 
-        console.log(nameImg);
+        const query = await db.query("INSERT INTO `candidato`(`nombre`,`apellido`,`grado`, `numeral`, `imagen`, `idTemporada`) VALUES (?,?,?,?,?,?)", [nombre, apellido, grado, numeral, nameImg, idTemporada]);
         
-        
-        //const query = db.query("INSERT INTO `candidato`(`nombre`, `grado`, `numeral`, `imagen`, `idTemporada`) VALUES ([value-2]','[value-3]','[value-4]','[value-5]','[value-6]')")
-        res.send('UWU')
+        res.status(201).json({
+            data : {
+                id : query[0].insertId
+            },
+            mensaje: "¡Candidato creado con exito!"
+        });
+
     } catch (error) {
-        res.json({
-            error: error,
+        res.status(400).json({
+            error: error.message,
             mensaje : "Creacion de candidato fallida"
         })
     }

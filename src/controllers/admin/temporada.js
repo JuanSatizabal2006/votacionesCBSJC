@@ -3,10 +3,14 @@ import { db } from "../../db.js"
 export const createTemporada = async (req,res) =>{
     try {
         const { fecha } = req.body;
-        const data = db.query("INSERT INTO `temporada`(`fecha`) VALUES ('$1')", [ fecha ])
+        console.log(fecha);
+        
+        const data = await db.query("INSERT INTO `temporada` (`fecha`) VALUES (?)", [ fecha ])
 
         res.status(201).json({
-            data: data[0],
+            data: {
+                idTemporada : data[0].insertId
+            },
             mensaje: "¡Temporada creada exitosamente!"
         })
 
