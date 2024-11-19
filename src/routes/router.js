@@ -9,8 +9,10 @@ import upload from "../helpers/multerConfig.js";
 import { crearCandidatos } from "../controllers/admin/candidatos.js";
 import {
   existeTemporadaCandidato,
+  validarBuscarCandidato,
   validarDatosCandidato,
 } from "../middlewares/candidatos.js";
+import { listarCandidatos } from "../controllers/estudiante/candidatos.js";
 const router = Router();
 
 router.get("/prueba", prueba);
@@ -31,5 +33,7 @@ router.post(
   validarDatosCandidato,
   crearCandidatos
 );
+
+router.get("/candidato/listar", validarBuscarCandidato, listarCandidatos)
 
 export default router;

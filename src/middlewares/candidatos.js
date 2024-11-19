@@ -59,8 +59,22 @@ export const existeTemporadaCandidato = async (req, res, next) => {
     next();
   } catch (error) {
     res.status(400).json({
-      error: error,
+      error: error.message,
       mensaje: "Creacion de candidato fallida",
+    });
+  }
+};
+
+export const validarBuscarCandidato = async (req, res, next) => {
+  try {
+    if (!req.body.idTemporada) {
+      throw new Error("El id de la temporada es obligatorio");
+    }
+    next();
+  } catch (error) {
+    res.status(400).json({
+      error: error.message,
+      mensaje: "Busqueda fallida",
     });
   }
 };
