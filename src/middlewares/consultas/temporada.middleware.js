@@ -2,10 +2,13 @@ import { db } from "../../db.js";
 
 export const existTemporada = async (req, res, next) => {
   try {
-    const query = await db.query(
+    const [rows] = await db.query(
       "SELECT * FROM temporada ORDER BY idTemporada DESC LIMIT 1"
     );
-    const activa = query[0][0].activa;
+    if (rows.length == 0) {
+      return next();
+    }
+    const activa = rows[0].estado;
     //Validamos si la ultima temporada creada ha sido cerrada o no
     if (activa != "0") {
       return res.status(406).json({
@@ -17,7 +20,7 @@ export const existTemporada = async (req, res, next) => {
     next();
   } catch (error) {
     res.status(400).json({
-      error: error,
+      error: error.message,
       mensaje: "Creacion de temporada cancelada",
     });
   }

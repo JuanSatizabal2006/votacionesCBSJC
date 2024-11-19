@@ -21,6 +21,9 @@ export const validDataTemporada = async (req, res, next) => {
 
     next();
   } catch (error) {
-    res.status(400).json({});
+    res.status(400).json({
+      error : error.message,
+      mensaje: 'Creacion de temporada cancelada'
+    });
   }
 };

@@ -2,14 +2,18 @@ import { db } from "../../db.js";
 
 export const existTemporadaCandidato = async (req, res, next) => {
   try {
-    const query = await db.query(
+    const [rows] = await db.query(
       "SELECT * FROM temporada ORDER BY idTemporada DESC LIMIT 1"
     );
-    const activa = query[0][0].activa;
 
-    if (activa == "0") {
+    if(rows.length == 0){
+      return next();
+    };
+    const activa = rows[0].activa;
+
+    if (activa != "1") {
       return res.status(400).json({
-        error: "No puedes crear un candidato sin una temporada activa",
+        error: "No puedes crear un candidato sin una temporada disponible",
         mensaje: "Creacion de candidato cancelada",
       });
     }
@@ -22,6 +26,7 @@ export const existTemporadaCandidato = async (req, res, next) => {
   }
 };
 
+//ESTUDIANTES
 export const candidActiv = async (req, res, next) => {
   try {
     const { idTemporada } = req.body;
@@ -31,7 +36,7 @@ export const candidActiv = async (req, res, next) => {
       [idTemporada]
     );
 
-    if (rows[0].activa != "1") {
+    if (rows[0].estado != "2") {
       return res.status(203).json({
         error:
           "Solo puedes ver el listado de candidatos cuando los administradores lo permitan",
