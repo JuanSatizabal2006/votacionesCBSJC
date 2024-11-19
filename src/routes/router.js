@@ -1,18 +1,15 @@
 import { Router } from "express";
 import { prueba } from "../controllers/prueba.js";
 import { createTemporada } from "../controllers/admin/temporada.js";
-import {
-  existeTemporada,
-  validarDatosTemporada,
-} from "../middlewares/temporada.js";
+
 import upload from "../helpers/multerConfig.js";
 import { crearCandidatos } from "../controllers/admin/candidatos.js";
-import {
-  existeTemporadaCandidato,
-  validarBuscarCandidato,
-  validarDatosCandidato,
-} from "../middlewares/candidatos.js";
+
 import { listarCandidatos } from "../controllers/estudiante/candidatos.js";
+import { validDataTemporada } from "../middlewares/datos/temporada.middleware.js";
+import { existTemporada } from "../middlewares/consultas/temporada.middleware.js";
+import { candidActiv, existTemporadaCandidato } from "../middlewares/consultas/candidatos.middleware.js";
+import { validDataCandidato, validIdTemporada } from "../middlewares/datos/candidatos.middleware.js";
 const router = Router();
 
 router.get("/prueba", prueba);
@@ -20,8 +17,8 @@ router.get("/prueba", prueba);
 //TEMPORADA
 router.post(
   "/temporada/crear",
-  validarDatosTemporada,
-  existeTemporada,
+  validDataTemporada,
+  existTemporada,
   createTemporada
 );
 
@@ -29,11 +26,11 @@ router.post(
 router.post(
   "/candidato/crear",
   upload.single("imagen"),
-  existeTemporadaCandidato,
-  validarDatosCandidato,
+  existTemporadaCandidato,
+  validDataCandidato,
   crearCandidatos
 );
 
-router.get("/candidato/listar", validarBuscarCandidato, listarCandidatos)
+router.get("/estudiante/candidato/listar", validIdTemporada, candidActiv, listarCandidatos);
 
 export default router;

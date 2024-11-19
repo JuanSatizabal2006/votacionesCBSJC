@@ -1,7 +1,5 @@
-import { db } from "../db.js";
-
 //Validar que a la hora de crear un candidato, que la temporada se encuentre activa
-export const validarDatosCandidato = async (req, res, next) => {
+export const validDataCandidato = async (req, res, next) => {
   const errors = {};
   try {
     if (!req.file) {
@@ -43,33 +41,12 @@ export const validarDatosCandidato = async (req, res, next) => {
   }
 };
 
-export const existeTemporadaCandidato = async (req, res, next) => {
-  try {
-    const query = await db.query(
-      "SELECT * FROM temporada ORDER BY idTemporada DESC LIMIT 1"
-    );
-    const activa = query[0][0].activa;
-
-    if (activa == "0") {
-      return res.status(400).json({
-        error: "No puedes crear un candidato sin una temporada activa",
-        mensaje: "Creacion de candidato cancelada",
-      });
-    }
-    next();
-  } catch (error) {
-    res.status(400).json({
-      error: error.message,
-      mensaje: "Creacion de candidato fallida",
-    });
-  }
-};
-
-export const validarBuscarCandidato = async (req, res, next) => {
+export const validIdTemporada = async (req, res, next) => {
   try {
     if (!req.body.idTemporada) {
       throw new Error("El id de la temporada es obligatorio");
     }
+
     next();
   } catch (error) {
     res.status(400).json({
