@@ -39,7 +39,7 @@ export const candidActiv = async (req, res, next) => {
     if (rows[0].estado != "2") {
       return res.status(203).json({
         error:
-          "Solo puedes ver el listado de candidatos cuando los administradores lo permitan",
+          "Solo puedes votar cuando los administradores lo permitan",
         mensaje: "Listado fallido",
       });
     }
