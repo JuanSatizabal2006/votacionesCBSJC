@@ -18,7 +18,7 @@ export const createTemporada = async (req, res) => {
     });
   } catch (error) {
     res.json({
-      error: error,
+      error: error.message,
       mensaje: "Creacion de temporada fallida",
     });
   }
@@ -39,7 +39,7 @@ export const abrirTemporada = async (req, res) => {
     });
   } catch (error) {
     res.json({
-      error: error,
+      error: error.message,
       mensaje: "Apertura de temporada fallida",
     });
   }
@@ -60,7 +60,7 @@ export const cerrarTemporada = async (req, res) => {
     });
   } catch (error) {
     res.json({
-      error: error,
+      error: error.message,
       mensaje: "Cierre de temporada fallida",
     });
   }
@@ -81,7 +81,7 @@ export const publicTemporada = async (req, res) => {
     });
   } catch (error) {
     res.json({
-      error: error,
+      error: error.message,
       mensaje: "Publicacion de temporada fallida",
     });
   }
@@ -102,7 +102,7 @@ export const finTemporada = async (req, res) => {
     });
   } catch (error) {
     res.json({
-      error: error,
+      error: error.message,
       mensaje: "Fin de temporada fallida",
     });
   }

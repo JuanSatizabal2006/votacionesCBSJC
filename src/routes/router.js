@@ -31,13 +31,14 @@ import {
   validFinTemporada,
   validPublicTemporada,
 } from "../middlewares/consultas/estadoTemp.middleware.js";
+import { loginEstud } from "../controllers/estudiante/auth.js";
 const router = Router();
 
 router.get("/prueba", prueba);
 
 //TEMPORADA
 router.post(
-  "admin/temporada/crear",
+  "/admin/temporada/crear",
   validDataTemporada,
   existTemporada,
   createTemporada
@@ -69,7 +70,6 @@ router.put(
   finTemporada
 );
 
-
 //CANDIDATOS
 router.post(
   "/candidato/crear",
@@ -87,5 +87,8 @@ router.get(
 );
 
 router.get("/admin/candidato/listar", validIdTemporada, listCandidAdmin);
+
+//LOGIN
+router.post("/estudiante/login", loginEstud);
 
 export default router;
