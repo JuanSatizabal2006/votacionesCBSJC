@@ -32,6 +32,7 @@ import {
   validPublicTemporada,
 } from "../middlewares/consultas/estadoTemp.middleware.js";
 import { loginEstud } from "../controllers/estudiante/auth.js";
+import { validLoginEstud } from "../middlewares/datos/auth.middleware.js";
 const router = Router();
 
 router.get("/prueba", prueba);
@@ -89,6 +90,8 @@ router.get(
 router.get("/admin/candidato/listar", validIdTemporada, listCandidAdmin);
 
 //LOGIN
-router.post("/estudiante/login", loginEstud);
+router.post("/estudiante/login",validLoginEstud, loginEstud);
+
+//VOTAR
 
 export default router;
