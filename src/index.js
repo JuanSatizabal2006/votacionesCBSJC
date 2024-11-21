@@ -1,5 +1,6 @@
 import express from "express";
-import router from "./routes/router.js";
+import routerS from "./routes/estudiante.router.js";
+import routerA from "./routes/admin.router.js";
 import cors from "cors";
 import morgan from "morgan";
 import sharp from "sharp";
@@ -17,7 +18,8 @@ app.use(express.static('./public'));
 app.use(cors());
 app.use(morgan("dev"));
 
-app.use(router);
+app.use(routerA);//ADMIN
+app.use(routerS);//ESTUDIANTES
 
 app.listen(3000);
 
