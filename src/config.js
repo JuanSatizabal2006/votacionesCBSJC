@@ -9,3 +9,5 @@ export const DATABASE = process.env.DATABASE
 export const URL_IMG = process.env.URL_IMG
 
 export const JWT_ACCESS = process.env.JWT_ACCESS
+
+export const SALT = process.env.SALT

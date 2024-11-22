@@ -33,6 +33,7 @@ export const loginEstud = async (req, res) => {
         "No puedes acceder en este momento, intenta de nuevo más tarde"
       );
     }
+
     const accessToken = jwt.sign(
       {
         idEstudiante: dataEstud[0].idEstudiante,
@@ -41,6 +42,7 @@ export const loginEstud = async (req, res) => {
         apellido: dataEstud[0].apellido,
         grado: dataEstud[0].grado,
         idRol: dataEstud[0].idRol,
+        idTemporada: estadoTemp[0].idTemporada
       },
       JWT_ACCESS,
       { expiresIn: "1h" }

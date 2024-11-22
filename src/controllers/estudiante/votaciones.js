@@ -3,15 +3,15 @@ import { db } from "../../db.js";
 export const votarCandidato = async (req, res) => {
   try {
     const { idEstudiante, idCandidato, hora } = req.body;
-    const idTemporada = req.idTemporada
+    const idTemporada = req.idTemporada;
     const query = await db.query(
       "INSERT INTO `votacion` (`idEstudiante`, `idCandidato`, `hora`) VALUES (?,?,?)",
       [idEstudiante, idCandidato, hora]
     );
 
-    console.log(query[0]);
-    
-    await db.query('UPDATE `estudiante` SET voto = 1 WHERE idEstudiante = ?', [idEstudiante]);
+    await db.query("UPDATE `estudiante` SET voto = 1 WHERE idEstudiante = ?", [
+      idEstudiante,
+    ]);
 
     res.status(200).json({
       data: query[0].insertId,

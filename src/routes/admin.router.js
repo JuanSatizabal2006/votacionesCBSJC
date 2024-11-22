@@ -24,6 +24,9 @@ import {
   validFinTemporada,
   validPublicTemporada,
 } from "../middlewares/consultas/estadoTemp.middleware.js";
+import { crearAd, pruebaBcrypt2 } from "../controllers/admin/prueba2.js";
+import { documentValid } from "../middlewares/consultas/documento.middleware.js";
+import { validCont } from "../helpers/regex.js";
 const routerA = Router();
 
 //CANDIDATOS
@@ -70,5 +73,9 @@ routerA.put(
 );
 
 routerA.get("/admin/candidato/listar", validIdTemporada, listCandidAdmin);
+
+
+routerA.post("/admin/prueba", documentValid, validCont, crearAd);
+routerA.post("/admin/ingresa", pruebaBcrypt2)
 
 export default routerA;

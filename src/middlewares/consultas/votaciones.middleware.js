@@ -18,13 +18,13 @@ export const puedeVotar = async (req, res, next) => {
     }
 
     //VALIDAR SI EL CANDIDATO AL CUAL DESEA VOTAR PERTENEZCA A LA ULTIMA TEMPORADA
-    const candValid = candidTempValid(temporada.id);
+    const candValid = await candidTempValid(temporada.id);
 
     if (candValid.error) {
       throw new Error(candValid.error);
     }
 
-    //VALIDAR QUE EL ESTUDIANTE YA VOTÓ 
+    //VALIDAR QUE EL ESTUDIANTE YA VOTÓ
     const [rows] = await db.query(
       "SELECT b.idRol, a.voto, a.grado FROM `estudiante` a INNER JOIN `usuarios` b ON b.idUsuario = a.idUsuario WHERE a.idEstudiante = ? AND b.isActive = 1",
       [idEstudiante]
@@ -42,7 +42,7 @@ export const puedeVotar = async (req, res, next) => {
       throw new Error("Tu voto ya ha sido registrado");
     }
 
-    req.idTemporada = temporada.id; 
+    req.idTemporada = temporada.id;
 
     next();
   } catch (error) {
