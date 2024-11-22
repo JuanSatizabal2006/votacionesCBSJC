@@ -26,6 +26,10 @@ export const validDataCandidato = async (req, res, next) => {
       errors.idTemporada = "El id de la temporada es obligatoria";
     }
 
+    if(!req.body.slogan){
+      errors.slogan = "El slogan es obligatorio"
+    }
+
     if (Object.keys(errors).length > 0) {
       const error = new Error("Validación fallida");
       error.detalles = errors; // Adjunta los detalles al objeto de error

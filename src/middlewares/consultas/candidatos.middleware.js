@@ -5,7 +5,6 @@ export const existTemporadaCandidato = async (req, res, next) => {
     const [rows] = await db.query(
       "SELECT * FROM temporada ORDER BY idTemporada DESC LIMIT 1"
     );
-    console.log(rows);
     
     if(rows.length == 0){
       return next();

@@ -16,6 +16,7 @@ export const crearCandidatos = async (req, res) => {
     res.status(201).json({
       data: {
         id: query[0].insertId,
+        a : req.body
       },
       mensaje: "¡Candidato creado con exito!",
     });

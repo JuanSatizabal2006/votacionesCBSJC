@@ -21,7 +21,9 @@ app.use(morgan("dev"));
 app.use(routerA);//ADMIN
 app.use(routerS);//ESTUDIANTES
 
-app.post("/prueba", (req, res)=>{
+app.post("/prueba", async (req, res)=>{
+    console.log(req.body);
+    
     res.json({
         mensaje: 'Esto llega manco (3-0)',
         data: req.body
