@@ -47,7 +47,7 @@ export const validIdTemporada = async (req, res, next) => {
       throw new Error("El id de la temporada es obligatorio");
     }
 
-    if (!isNaN(req.body.idTemporada)) {
+    if (isNaN(req.body.idTemporada)) {
       throw new Error("El formato del id de la temporada es incorrecto");
     }
 
