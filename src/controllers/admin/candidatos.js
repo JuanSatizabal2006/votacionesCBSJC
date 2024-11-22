@@ -6,11 +6,11 @@ export const crearCandidatos = async (req, res) => {
     console.log(req.body);
 
     const nameImg = `${URL_IMG}${req.file.originalname}`;
-    const { nombre, apellido, grado, numeral, idTemporada } = req.body;
+    const { nombre, apellido, grado, numeral, idTemporada, slogan } = req.body;
 
     const query = await db.query(
-      "INSERT INTO `candidato`(`nombre`,`apellido`,`grado`, `numeral`, `imagen`, `idTemporada`) VALUES (?,?,?,?,?,?)",
-      [nombre, apellido, grado, numeral, nameImg, idTemporada]
+      "INSERT INTO `candidato`(`nombre`,`apellido`,`grado`, `numeral`, `imagen`, `idTemporada`, `slogan`) VALUES (?,?,?,?,?,?,?)",
+      [nombre, apellido, grado, numeral, nameImg, idTemporada, slogan]
     );
 
     res.status(201).json({
