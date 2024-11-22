@@ -21,6 +21,13 @@ app.use(morgan("dev"));
 app.use(routerA);//ADMIN
 app.use(routerS);//ESTUDIANTES
 
+app.post("/prueba", (req, res)=>{
+    res.json({
+        mensaje: 'Esto llega manco (3-0)',
+        data: req.body
+    })
+})
+
 app.listen(3000);
 
 console.log("Puerto escuchado en el puerto 3000");
