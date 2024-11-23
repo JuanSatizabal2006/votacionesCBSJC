@@ -2,11 +2,14 @@ import { db } from "../../db.js";
 
 export const listarCandidatos = async (req, res) => {
   try {
-    const { idTemporada } = req.body;
+    if (!req.params.temporada) {
+      throw new Error("El id de la temporada es obligatorio");
+    }
+    const { temporada } = req.params;
 
     const [rows] = await db.query(
       "SELECT * FROM `candidato` WHERE idTemporada = ?",
-      [idTemporada]
+      [temporada]
     );
 
     if (rows.length == 0) {
@@ -20,7 +23,6 @@ export const listarCandidatos = async (req, res) => {
       data: rows,
       mensaje: "¡Candidatos listados con exito!",
     });
-    
   } catch (error) {
     res.status(400).json({
       error: error.message,

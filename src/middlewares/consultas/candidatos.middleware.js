@@ -29,11 +29,11 @@ export const existTemporadaCandidato = async (req, res, next) => {
 //ESTUDIANTES
 export const candidActiv = async (req, res, next) => {
   try {
-    const { idTemporada } = req.body;
+    const { temporada } = req.params;
 
     const [rows] = await db.query(
       "SELECT * FROM `temporada` WHERE idTemporada = ?",
-      [idTemporada]
+      [temporada]
     );
 
     if (rows[0].estado != "2") {

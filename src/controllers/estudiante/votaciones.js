@@ -3,7 +3,9 @@ import { db } from "../../db.js";
 export const votarCandidato = async (req, res) => {
   try {
     const { idEstudiante, idCandidato, hora } = req.body;
+    
     const idTemporada = req.idTemporada;
+
     const query = await db.query(
       "INSERT INTO `votacion` (`idEstudiante`, `idCandidato`, `hora`) VALUES (?,?,?)",
       [idEstudiante, idCandidato, hora]

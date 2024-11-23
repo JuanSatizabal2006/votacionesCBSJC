@@ -5,10 +5,11 @@ import { estadoUltimaTemporada } from "../../helpers/querys/ultimaTemporada.js";
 //VALIDACION PARA SABER SI EL ESTUDIANTE PUEDE VOTAR
 export const puedeVotar = async (req, res, next) => {
   try {
-    const { idEstudiante } = req.body;
+    const { idEstudiante, idCandidato } = req.body;
 
     const temporada = await estadoUltimaTemporada(); //VALIDAR SI EL ESTADO DE LA TEMPORADA ES APTO PARA VOTAR
-
+    console.log(temporada);
+    
     if (temporada.error) {
       throw new Error(temporada.error);
     }
@@ -18,7 +19,7 @@ export const puedeVotar = async (req, res, next) => {
     }
 
     //VALIDAR SI EL CANDIDATO AL CUAL DESEA VOTAR PERTENEZCA A LA ULTIMA TEMPORADA
-    const candValid = await candidTempValid(temporada.id);
+    const candValid = await candidTempValid(temporada.id, idCandidato);
 
     if (candValid.error) {
       throw new Error(candValid.error);

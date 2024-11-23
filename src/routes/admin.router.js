@@ -72,10 +72,9 @@ routerA.put(
   finTemporada
 );
 
-routerA.get("/admin/candidato/listar", validIdTemporada, listCandidAdmin);
-
+routerA.get("/admin/candidato/listar/:temporada", listCandidAdmin);
 
 routerA.post("/admin/prueba", documentValid, validCont, crearAd);
-routerA.post("/admin/ingresa", pruebaBcrypt2)
+routerA.post("/admin/ingresa", pruebaBcrypt2);
 
 export default routerA;
