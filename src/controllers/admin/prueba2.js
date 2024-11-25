@@ -69,7 +69,7 @@ export const pruebaBcrypt2 = async (req, res) => {
     
 
     if (conValid.error || !conValid) {
-      throw new Error(`Documento o contraseña incorrectos, ${conValid.error}`);
+      throw new Error(`Documento o contraseña incorrectos`);
     }
 
     const [temp] = await db.query(

@@ -27,6 +27,7 @@ import {
 import { crearAd, pruebaBcrypt2 } from "../controllers/admin/prueba2.js";
 import { documentValid } from "../middlewares/consultas/documento.middleware.js";
 import { validCont } from "../helpers/regex.js";
+import { verGanador, verResultados } from "../controllers/admin/resultados.js";
 const routerA = Router();
 
 //CANDIDATOS
@@ -76,5 +77,10 @@ routerA.get("/admin/candidato/listar/:temporada", listCandidAdmin);
 
 routerA.post("/admin/prueba", documentValid, validCont, crearAd);
 routerA.post("/admin/ingresa", pruebaBcrypt2);
+
+routerA.get("/admin/resultados/:temporada", verResultados);
+
+routerA.get("/admin/resultados/:temporada/:grado", verResultados);//progreso
+routerA.get("/admin/ganador/:temporada/:grado", verGanador)
 
 export default routerA;
