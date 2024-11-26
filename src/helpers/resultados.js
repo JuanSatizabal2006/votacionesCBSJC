@@ -7,7 +7,7 @@ export const obtenerResultados = async (grado, temporada) => {
     data: [], //total votos
     categories: [], //numerales
     tooltipLabels: [], //nombres
-    subtitle: "Personero",
+    subtitle: grado == '11' ? "Personero" : "Personerito",
     maxValue: 0,
     users: [], //Datos fuera de la grafica
   };
