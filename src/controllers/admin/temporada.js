@@ -21,9 +21,20 @@ export const createTemporada = async (req, res) => {
     );
 
     console.log(data.insertId);
- 
+
     //CREAMOS EL VOTO EN BLANCO
-    await db.query("INSERT INTO `candidato` (nombre, apellido, grado, numeral, slogan, imagen, idTemporada) VALUES(?,?,?,?,?,?,?)", ["VOTO", "EN BLANCO", "BLANCO", "00", "VOTO EN BLANCO", `${URL_IMG}VOTO_EN_BLANCO.jpg`, data.insertId]);
+    await db.query(
+      "INSERT INTO `candidato` (nombre, apellido, grado, numeral, slogan, imagen, idTemporada) VALUES(?,?,?,?,?,?,?)",
+      [
+        "VOTO",
+        "EN BLANCO",
+        "BLANCO",
+        "00",
+        "VOTO EN BLANCO",
+        `${URL_IMG}VOTO_EN_BLANCO.jpg`,
+        data.insertId,
+      ]
+    );
 
     const newToken = jwt.sign(
       {
@@ -33,7 +44,7 @@ export const createTemporada = async (req, res) => {
         apellido: rows[0].apellido,
         idRol: rows[0].idRol,
         idTemporada: data.insertId,
-        estado: 1
+        estado: 1,
       },
       JWT_ACCESS,
       { expiresIn: "1h" }
@@ -94,16 +105,27 @@ export const cerrarTemporada = async (req, res) => {
 };
 
 export const publicTemporada = async (req, res) => {
+  const grados = [11, 5];
   try {
     const { idTemporada } = req.body;
 
-    const [rows] = await db.query(
-      "UPDATE `temporada` SET `estado` = 4 WHERE idTemporada = ?",
-      [idTemporada]
+    const ganadores = await Promise.all(
+      grados.map(async (value) => {
+        const [rows] = await db.query(
+          "SELECT COUNT(*) as total, a.idCandidato, CONCAT(b.nombre, ' ', b.apellido) as nombre, b.imagen, b.grado, b.slogan FROM `votacion` a INNER JOIN `candidato` b ON b.idCandidato = a.idCandidato WHERE b.grado LIKE ? AND b.idTemporada = ? GROUP BY a.idCandidato, nombre, b.imagen, b.grado, b.slogan ORDER BY total DESC",
+          [`${value}%`, idTemporada]
+        );
+        return rows[0]; // Retornamos los resultados para cada grado en orden
+      })
+    );
+    
+    await db.query(
+      "UPDATE `temporada` SET `estado` = 4, `resultadoPersonero` = ?, `resultadoPersonerito` = ? WHERE idTemporada = ?",
+      [ganadores[0].idCandidato, ganadores[1].idCandidato, idTemporada]
     );
 
     res.status(200).json({
-      data: rows,
+      data: ganadores,
       mensaje: "¡Votaciones publicadas con exito!",
     });
   } catch (error) {
@@ -134,3 +156,5 @@ export const finTemporada = async (req, res) => {
     });
   }
 };
+
+export const listarTemporadas = () => {};

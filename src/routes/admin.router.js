@@ -81,6 +81,8 @@ routerA.post("/admin/ingresa", pruebaBcrypt2);
 routerA.get("/admin/resultados/:temporada", verResultados);
 
 routerA.get("/admin/resultados/:temporada/:grado", verResultados);//progreso
-routerA.get("/admin/ganador/:temporada/:grado", verGanador)
+routerA.get("/admin/ganador/:temporada/:grado", verGanador)//Ganador
+
+routerA.get("/admin/listar/temporadas")
 
 export default routerA;
