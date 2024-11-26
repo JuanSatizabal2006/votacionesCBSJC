@@ -13,12 +13,7 @@ export const obtenerResultados = async (grado, temporada) => {
   };
 
   try {
-    const [max] = await db.query(
-      "SELECT COUNT(*) as maximo FROM `estudiante` a INNER JOIN `usuarios` b ON b.idUsuario = a.idUsuario WHERE b.isActive = 1"
-    );
 
-    
-    
     const [rows] = await db.query(
       'SELECT COUNT(a.idCandidato) as total, b.idCandidato, CONCAT(b.nombre, " ", b.apellido) as nombre, b.numeral, b.imagen, b.grado FROM `votacion` a INNER JOIN `candidato` b ON b.idCandidato = a.idCandidato INNER JOIN `temporada` c ON c.idTemporada = b.idTemporada WHERE c.idTemporada = ? AND b.grado LIKE ? GROUP BY a.idCandidato, b.idCandidato, nombre, b.numeral, b.imagen, b.grado ;',
       [temporada, `${grado}%`, temporada]

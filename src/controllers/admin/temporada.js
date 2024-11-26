@@ -131,7 +131,7 @@ export const publicTemporada = async (req, res) => {
         return rows[0]; // Retornamos los resultados para cada grado en orden
       })
     );
-    
+
     await db.query(
       "UPDATE `temporada` SET `estado` = 4, `resultadoPersonero` = ?, `resultadoPersonerito` = ? WHERE idTemporada = ?",
       [ganadores[0].idCandidato, ganadores[1].idCandidato, idTemporada]
@@ -170,4 +170,23 @@ export const finTemporada = async (req, res) => {
   }
 };
 
-export const listarTemporadas = () => {};
+export const listarTemporadas = async (req, res) => {
+  try {
+    const [rows] = await db.query(
+      "SELECT a.resultadoPersonero, a.resultadoPersonerito, b.* FROM `temporada` a JOIN `candidato` b ON b.idCandidato = a.resultadoPersonero || b.idCandidato = a.resultadoPersonerito"
+    );
+
+    if (rows.length <= 0) {
+      throw new Error("No hay temporadas registradas");
+    }
+    res.status(200).json({
+      data: rows,
+      mensaje: "¡Listado exitoso!",
+    });
+  } catch (error) {
+    res.status(404).json({
+      error: error.message,
+      mensaje: "Error al listar las temporadas",
+    });
+  }
+};
