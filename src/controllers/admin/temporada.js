@@ -49,6 +49,8 @@ export const createTemporada = async (req, res) => {
       ]
     );
 
+    await db.query("UPDATE `estudiante` SET `voto`= '0'")
+
     const newToken = jwt.sign(
       {
         idAdmin: rows[0].idEstudiante,
