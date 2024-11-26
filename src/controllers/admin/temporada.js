@@ -1,19 +1,41 @@
 import { db } from "../../db.js";
+import jwt from "jsonwebtoken";
+import { JWT_ACCESS } from "../../config.js";
 
 export const createTemporada = async (req, res) => {
   try {
-    const { fecha } = req.body;
-    console.log(fecha);
+    const { fecha, id } = req.body;
+
+    const [rows] = await db.query(
+      "SELECT * FROM `admin` a INNER JOIN `usuarios` b ON a.idUsuario = b.idUsuario WHERE a.idAdmin = ?",
+      [id]
+    );
+
+    if (rows.length <= 0) {
+      throw new Error("Es necesario las crendenciales de un administrador");
+    }
 
     const data = await db.query(
       "INSERT INTO `temporada` (`fecha`) VALUES (?)",
       [fecha]
     );
 
-    res.status(201).json({
-      data: {
-        idTemporada: data[0].insertId, //ESTE ID SE DEBE ACTUALIZAR EN EL FRONTEND
+    const newToken = jwt.sign(
+      {
+        idAdmin: rows[0].idEstudiante,
+        idUsuario: rows[0].idUsuario,
+        nombre: rows[0].nombre,
+        apellido: rows[0].apellido,
+        idRol: rows[0].idRol,
+        idTemporada: data[0].insertId,
+        estado: 1
       },
+      JWT_ACCESS,
+      { expiresIn: "1h" }
+    );
+
+    res.status(201).json({
+      data: newToken,
       mensaje: "¡Temporada creada exitosamente!",
     });
   } catch (error) {

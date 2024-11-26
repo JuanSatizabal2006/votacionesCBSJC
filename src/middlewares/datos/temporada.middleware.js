@@ -9,6 +9,13 @@ export const validDataTemporada = async (req, res, next) => {
       });
     }
 
+    if (!req.body.id) {
+      return res.status(400).json({
+        error: { id: "El id del admin es obligatorio" },
+        mensaje: "Creacion de temporada cancelada",
+      });
+    }
+
     const { fecha } = req.body;
 
     //Validar el formato de la fecha
