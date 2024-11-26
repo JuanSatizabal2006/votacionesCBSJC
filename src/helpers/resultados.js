@@ -26,7 +26,21 @@ export const obtenerResultados = async (grado, temporada) => {
     );
 
     if (rows.length <= 0) {
-      throw new Error("No hay votos registrados");
+      const [result] = await db.query("SELECT * FROM `candidato` WHERE idTemporada = ? AND grado LIKE ?", [temporada, `${grado}%`])
+      
+      result.forEach((value)=>{
+        objResult.users.push({
+          img: value.imagen,
+          ficha: value.numeral,
+          grado: value.grado,
+          nombre: `${value.nombre} ${value.apellido}`,
+        });
+      })
+      
+      return {
+        error : 'No hay votos registrados',
+        data: objResult.users
+      }
     }
 
     rows.forEach((value, index) => {

@@ -17,7 +17,10 @@ export const verResultados = async (req, res) => {
     const resultados = await obtenerResultados(grado, temporada); //Obtencion de los datos para la grafica
 
     if (resultados.error) {
-      throw new Error(resultados.error);
+      res.status(404).json({
+        error: resultados.message,
+        mensaje: resultados.data || [],
+      });
     }
 
     res.status(200).json({
@@ -50,7 +53,10 @@ export const verGanador = async (req, res) => {
     const resultados = await obtenerResultados(grado, temporada); //Obtencion de los datos para la grafica
 
     if (resultados.error) {
-      throw new Error(resultados.error);
+      res.status(404).json({
+        error: resultados.message,
+        mensaje: resultados.data || [],
+      });
     }
 
     const [rows] = await db.query(

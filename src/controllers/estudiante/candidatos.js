@@ -27,12 +27,14 @@ export const listarCandidatos = async (req, res) => {
         }
 
         return res.status(200).json({
-          data: rows,
+          data: {
+            data : rows,
+            estado : 2
+          },
           mensaje: "¡Candidatos listados con exito!",
         });
 
       case "4":
-      
         const [ganador] = await db.query(
           "SELECT COUNT(*) as total, a.idCandidato, CONCAT(b.nombre, ' ', b.apellido) as nombre, b.imagen, b.grado, b.slogan FROM `votacion` a INNER JOIN `candidato` b ON b.idCandidato = a.idCandidato WHERE b.grado LIKE ? AND b.idTemporada = ? GROUP BY a.idCandidato, nombre, b.imagen, b.grado, b.slogan ORDER BY total DESC",
           [`${grado}%`, temporada]
@@ -44,7 +46,8 @@ export const listarCandidatos = async (req, res) => {
 
         return res.status(200).json({
           data: {
-            ganador: ganador[0]
+            ganador: ganador[0],
+            estado : 4
           },
           mensaje: "¡Ganador obtenido correctamente!",
         });
