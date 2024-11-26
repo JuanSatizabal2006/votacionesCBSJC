@@ -17,10 +17,7 @@ export const verResultados = async (req, res) => {
     const resultados = await obtenerResultados(grado, temporada); //Obtencion de los datos para la grafica
 
     if (resultados.error) {
-      res.status(404).json({
-        error: resultados.message,
-        mensaje: resultados.data || [],
-      });
+      throw new Error(resultados.error);
     }
 
     res.status(200).json({
@@ -53,20 +50,13 @@ export const verGanador = async (req, res) => {
     const resultados = await obtenerResultados(grado, temporada); //Obtencion de los datos para la grafica
 
     if (resultados.error) {
-      res.status(404).json({
-        error: resultados.message,
-        mensaje: resultados.data || [],
-      });
+      throw new Error(resultados.error);
     }
 
     const [rows] = await db.query(
       "SELECT COUNT(*) as total, a.idCandidato, CONCAT(b.nombre, ' ', b.apellido) as nombre, b.imagen, b.grado, b.slogan FROM `votacion` a INNER JOIN `candidato` b ON b.idCandidato = a.idCandidato WHERE b.grado LIKE ? AND b.idTemporada = ? GROUP BY a.idCandidato, nombre, b.imagen, b.grado, b.slogan ORDER BY total DESC",
       [`${grado}%`, temporada]
     );
-
-    if (rows.length <= 0) {
-      throw new Error("No hay un ganador definido, faltan votos");
-    }
 
     res.status(200).json({
       data: {

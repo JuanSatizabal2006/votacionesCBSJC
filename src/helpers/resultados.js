@@ -7,7 +7,7 @@ export const obtenerResultados = async (grado, temporada) => {
     data: [], //total votos
     categories: [], //numerales
     tooltipLabels: [], //nombres
-    subtitle: grado == '11' ? "Personero" : "Personerito",
+    subtitle: grado == "11" ? "Personero" : "Personerito",
     maxValue: 0,
     users: [], //Datos fuera de la grafica
   };
@@ -21,26 +21,12 @@ export const obtenerResultados = async (grado, temporada) => {
     objResult.maxValue = max[0].maximo;
 
     const [rows] = await db.query(
-      'SELECT COUNT(a.idCandidato) as total, b.idCandidato, CONCAT(b.nombre, " ", b.apellido) as nombre, b.numeral, b.imagen, b.grado FROM `votacion` a INNER JOIN `candidato` b ON b.idCandidato = a.idCandidato INNER JOIN `temporada` c ON c.idTemporada = b.idTemporada WHERE c.idTemporada = ? AND b.grado LIKE ? OR grado = "BLANCO" GROUP BY a.idCandidato, b.idCandidato, nombre, b.numeral, b.imagen, b.grado ;',
-      [temporada, `${grado}%`]
+      'SELECT COUNT(a.idCandidato) as total, b.idCandidato, CONCAT(b.nombre, " ", b.apellido) as nombre, b.numeral, b.imagen, b.grado FROM `votacion` a INNER JOIN `candidato` b ON b.idCandidato = a.idCandidato INNER JOIN `temporada` c ON c.idTemporada = b.idTemporada WHERE c.idTemporada = ? AND b.grado LIKE ? OR (b.grado = "BLANCO" AND b.idTemporada = ?) GROUP BY a.idCandidato, b.idCandidato, nombre, b.numeral, b.imagen, b.grado ;',
+      [temporada, `${grado}%`, temporada]
     );
 
     if (rows.length <= 0) {
-      const [result] = await db.query("SELECT * FROM `candidato` WHERE idTemporada = ? AND grado LIKE ?", [temporada, `${grado}%`])
-      
-      result.forEach((value)=>{
-        objResult.users.push({
-          img: value.imagen,
-          ficha: value.numeral,
-          grado: value.grado,
-          nombre: `${value.nombre} ${value.apellido}`,
-        });
-      })
-      
-      return {
-        error : 'No hay votos registrados',
-        data: objResult.users
-      }
+      throw new Error("No hay votos registrados");
     }
 
     rows.forEach((value, index) => {
