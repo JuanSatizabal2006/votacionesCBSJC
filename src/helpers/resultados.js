@@ -20,7 +20,7 @@ export const obtenerResultados = async (grado, temporada) => {
     
     
     const [rows] = await db.query(
-      'SELECT COUNT(a.idCandidato) as total, b.idCandidato, CONCAT(b.nombre, " ", b.apellido) as nombre, b.numeral, b.imagen, b.grado FROM `votacion` a INNER JOIN `candidato` b ON b.idCandidato = a.idCandidato INNER JOIN `temporada` c ON c.idTemporada = b.idTemporada WHERE c.idTemporada = ? AND b.grado LIKE ? OR (b.grado = "BLANCO" AND b.idTemporada = ?) GROUP BY a.idCandidato, b.idCandidato, nombre, b.numeral, b.imagen, b.grado ;',
+      'SELECT COUNT(a.idCandidato) as total, b.idCandidato, CONCAT(b.nombre, " ", b.apellido) as nombre, b.numeral, b.imagen, b.grado FROM `votacion` a INNER JOIN `candidato` b ON b.idCandidato = a.idCandidato INNER JOIN `temporada` c ON c.idTemporada = b.idTemporada WHERE c.idTemporada = ? AND b.grado LIKE ? GROUP BY a.idCandidato, b.idCandidato, nombre, b.numeral, b.imagen, b.grado ;',
       [temporada, `${grado}%`, temporada]
     );
     
@@ -51,8 +51,3 @@ export const obtenerResultados = async (grado, temporada) => {
     };
   }
 };
-
-/**
- *
- * SELECT COUNT(a.idCandidato) as total, b.idCandidato, CONCAT(b.nombre, ' ', b.apellido) as nombre, b.numeral, b.imagen, b.grado FROM `votacion` a INNER JOIN `candidato` b ON b.idCandidato = a.idCandidato INNER JOIN `temporada` c ON c.idTemporada = b.idTemporada WHERE c.idTemporada = 15  AND b.grado LIKE "11%" GROUP BY a.idCandidato, b.idCandidato, nombre, b.numeral, b.imagen,b.grado ORDER BY total DESC;
- */

@@ -28,7 +28,20 @@ export const createTemporada = async (req, res) => {
       [
         "VOTO",
         "EN BLANCO",
-        "BLANCO",
+        "11-0",
+        "00",
+        "VOTO EN BLANCO",
+        `${URL_IMG}VOTO_EN_BLANCO.jpg`,
+        data.insertId,
+      ]
+    );
+
+    await db.query(
+      "INSERT INTO `candidato` (nombre, apellido, grado, numeral, slogan, imagen, idTemporada) VALUES(?,?,?,?,?,?,?)",
+      [
+        "VOTO",
+        "EN BLANCO",
+        "5-0",
         "00",
         "VOTO EN BLANCO",
         `${URL_IMG}VOTO_EN_BLANCO.jpg`,
