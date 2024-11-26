@@ -15,10 +15,15 @@ export const createTemporada = async (req, res) => {
       throw new Error("Es necesario las crendenciales de un administrador");
     }
 
-    const data = await db.query(
+    const [data] = await db.query(
       "INSERT INTO `temporada` (`fecha`) VALUES (?)",
       [fecha]
     );
+
+    console.log(data.insertId);
+ 
+    //CREAMOS EL VOTO EN BLANCO
+    await db.query("INSERT INTO `candidato` (nombre, apellido, grado, numeral, slogan, imagen, idTemporada) VALUES(?,?,?,?,?,?,?)", ["VOTO", "EN BLANCO", "BLANCO", "00", "VOTO EN BLANCO", "http://localhost:3000/uploads/VOTO_EN_BLANCO.jpg", data.insertId])
 
     const newToken = jwt.sign(
       {
@@ -27,7 +32,7 @@ export const createTemporada = async (req, res) => {
         nombre: rows[0].nombre,
         apellido: rows[0].apellido,
         idRol: rows[0].idRol,
-        idTemporada: data[0].insertId,
+        idTemporada: data.insertId,
         estado: 1
       },
       JWT_ACCESS,
