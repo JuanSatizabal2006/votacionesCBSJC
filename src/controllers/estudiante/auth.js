@@ -42,7 +42,8 @@ export const loginEstud = async (req, res) => {
         apellido: dataEstud[0].apellido,
         grado: dataEstud[0].grado,
         idRol: dataEstud[0].idRol,
-        idTemporada: estadoTemp[0].idTemporada
+        idTemporada: estadoTemp[0].idTemporada,
+        estado: estado
       },
       JWT_ACCESS,
       { expiresIn: "1h" }

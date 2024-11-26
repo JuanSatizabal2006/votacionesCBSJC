@@ -1,6 +1,6 @@
 import { db } from "../../db.js";
 import jwt from "jsonwebtoken";
-import { JWT_ACCESS } from "../../config.js";
+import { JWT_ACCESS, URL_IMG } from "../../config.js";
 
 export const createTemporada = async (req, res) => {
   try {
@@ -23,7 +23,7 @@ export const createTemporada = async (req, res) => {
     console.log(data.insertId);
  
     //CREAMOS EL VOTO EN BLANCO
-    await db.query("INSERT INTO `candidato` (nombre, apellido, grado, numeral, slogan, imagen, idTemporada) VALUES(?,?,?,?,?,?,?)", ["VOTO", "EN BLANCO", "BLANCO", "00", "VOTO EN BLANCO", "http://localhost:3000/uploads/VOTO_EN_BLANCO.jpg", data.insertId])
+    await db.query("INSERT INTO `candidato` (nombre, apellido, grado, numeral, slogan, imagen, idTemporada) VALUES(?,?,?,?,?,?,?)", ["VOTO", "EN BLANCO", "BLANCO", "00", "VOTO EN BLANCO", `${URL_IMG}VOTO_EN_BLANCO.jpg`, data.insertId]);
 
     const newToken = jwt.sign(
       {

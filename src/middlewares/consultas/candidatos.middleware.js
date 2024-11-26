@@ -36,14 +36,14 @@ export const candidActiv = async (req, res, next) => {
       [temporada]
     );
 
-    if (rows[0].estado != "2") {
+    if (rows[0].estado != "2" && rows[0].estado != 4) {
       return res.status(203).json({
         error:
-          "Solo puedes votar cuando los administradores lo permitan",
+          "Solo puedes ingresar cuando los administradores lo permitan",
         mensaje: "Listado fallido",
       });
     }
-
+    req.estado = rows[0].estado;
     next();
   } catch (error) {
     res.status(400).json({

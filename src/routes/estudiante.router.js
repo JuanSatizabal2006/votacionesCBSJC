@@ -10,7 +10,7 @@ import { validDataVotacion } from "../middlewares/datos/votaciones.middleware.js
 
 const routerS = Router();
 
-routerS.get("/estudiante/candidato/listar/:temporada", candidActiv, listarCandidatos);
+routerS.get("/estudiante/candidato/listar/:temporada/:grado", candidActiv, listarCandidatos);
 
 //LOGIN
 routerS.post("/estudiante/login", validLoginEstud, loginEstud);

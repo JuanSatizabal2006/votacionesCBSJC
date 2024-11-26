@@ -20,8 +20,6 @@ export const verResultados = async (req, res) => {
       throw new Error(resultados.error);
     }
 
-    console.log(resultados.resultados);
-
     res.status(200).json({
       data: resultados.resultados,
       mensaje: "Resultados calculados exitosamente",
@@ -59,6 +57,10 @@ export const verGanador = async (req, res) => {
       "SELECT COUNT(*) as total, a.idCandidato, CONCAT(b.nombre, ' ', b.apellido) as nombre, b.imagen, b.grado, b.slogan FROM `votacion` a INNER JOIN `candidato` b ON b.idCandidato = a.idCandidato WHERE b.grado LIKE ? AND b.idTemporada = ? GROUP BY a.idCandidato, nombre, b.imagen, b.grado, b.slogan ORDER BY total DESC",
       [`${grado}%`, temporada]
     );
+
+    if (rows.length <= 0) {
+      throw new Error("No hay un ganador definido, faltan votos");
+    }
 
     res.status(200).json({
       data: {

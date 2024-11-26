@@ -29,8 +29,6 @@ export const obtenerResultados = async (grado, temporada) => {
       throw new Error("No hay votos registrados");
     }
 
-    console.log(rows.length);
-
     rows.forEach((value, index) => {
       objResult.data.push(value.total || 0);
       objResult.categories.push(value.numeral || 0);
